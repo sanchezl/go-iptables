@@ -19,7 +19,6 @@ import (
 	"fmt"
 	"math/big"
 	"net"
-	"os"
 	"reflect"
 	"testing"
 )
@@ -384,12 +383,6 @@ func TestError(t *testing.T) {
 		t.Fatalf("no error with invalid ipt binary")
 	}
 
-	switch e := err.(type) {
-	case *os.PathError:
-		// OK
-	default:
-		t.Fatalf("expected type os.PathError, got %t", e)
-	}
 }
 
 func TestIsNotExist(t *testing.T) {

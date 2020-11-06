@@ -20,6 +20,7 @@ import (
 	"io"
 	"net"
 	"os/exec"
+	"os/user"
 	"regexp"
 	"strconv"
 	"strings"
@@ -445,6 +446,15 @@ func (ipt *IPTables) runWithOutput(args []string, stdout io.Writer) error {
 		Args:   args,
 		Stdout: stdout,
 		Stderr: &stderr,
+	}
+
+
+
+	if u, err := user.Current(); err == nil && u.Uid != "0" {
+		if sudo, err := exec.LookPath("sudo"); err == nil {
+			cmd.Args = append([]string{cmd.Path}, cmd.Args...)
+			cmd.Path = sudo
+		}
 	}
 
 	if err := cmd.Run(); err != nil {
